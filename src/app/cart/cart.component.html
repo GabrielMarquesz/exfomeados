@@ -1,0 +1,57 @@
+<!--
+  
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Carrinho de Compras</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let item of products">
+        <h2>{{ item.product.name }}</h2><br><br>
+
+        <p>Preço: R$ {{ item.product.price }}</p>
+        <br>
+        <p>Quantidade: {{ item.quantity }}</p>
+        <br>
+        <p>Total: R$ {{ item.product.price * item.quantity }}</p>
+
+        <ion-button color="danger" (click)="removeFromCart(item.product.id)">-</ion-button>
+      </ion-item>
+    </ion-list>
+  
+    <h2>Total: R$ {{ getTotal() }}</h2>
+  
+    <ion-button expand="full" color="primary" (click)="clearCart()">Limpar Carrinho</ion-button>
+    <ion-button expand="full" color="secondary" (click)="goToDeliveryForm()">Finalizar Pedido</ion-button>
+  </ion-content>
+-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Carrinho</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of cart" id="cartt">
+      <div> <h3>{{ item.product.name }}</h3> </div>
+
+      <div> Preço: R$ {{ item.product.price }}</div>
+      
+      <div> Quantidade: {{ item.quantity }}</div>
+
+      <ion-button color="danger" (click)="removeFromCart(item.product.id)">-</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <div><h3>Total: R$ {{ total | currency }}</h3></div>
+
+  <ion-button expand="full" color="secondary" (click)="goToDeliveryForm()">
+    Finalizar Pedido
+  </ion-button>
+</ion-content>
+

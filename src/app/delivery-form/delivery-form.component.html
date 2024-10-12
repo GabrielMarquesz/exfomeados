@@ -1,0 +1,122 @@
+<!--<ion-content>
+    <form (ngSubmit)="submitDelivery()">
+
+      <h1>PREENCHA AS INFORMAÇÕES PARA<br><strong>CONCLUIR O PEDIDO!</strong> </h1>
+      <ion-item>
+        <ion-label position="floating">Nome Completo</ion-label>
+        <ion-input type="text" [(ngModel)]="deliveryData.name" name="name"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Endereço</ion-label>
+        <ion-input type="text" [(ngModel)]="deliveryData.address" name="address"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">CEP</ion-label>
+        <ion-input type="text" [(ngModel)]="deliveryData.cep" name="cep"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Forma de Pagamento</ion-label>
+        <ion-select [(ngModel)]="deliveryData.paymentMethod" name="paymentMethod">
+          <ion-select-option value="credit">Cartão de Crédito</ion-select-option>
+          <ion-select-option value="debit">Cartão de Débito</ion-select-option>
+          <ion-select-option value="cash">Dinheiro</ion-select-option>
+          <ion-select-option value="cash">Pix</ion-select-option>
+
+        </ion-select>
+      </ion-item>
+  
+      <ion-button expand="full" type="submit">Confirmar Pedido</ion-button>
+    </form>
+  </ion-content>-->
+
+
+
+<!--
+  /*texte*/
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Informações de Entrega</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <form [formGroup]="deliveryForm" (ngSubmit)="submitDelivery()">
+      <ion-item>
+        <ion-label position="floating" >Nome</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Endereço</ion-label>
+        <ion-input formControlName="address"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">CEP</ion-label>
+        <ion-input formControlName="cep"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input formControlName="telefone"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Forma de Pagamento</ion-label>
+        <ion-select formControlName="paymentMethod">
+          <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
+          <ion-select-option value="cartao">Cartão</ion-select-option>
+          <ion-select-option value="cartao">Pix</ion-select-option>
+
+        </ion-select>
+      </ion-item>
+  
+      <ion-button expand="full" type="submit">Enviar Pedido</ion-button>
+    </form>
+  </ion-content>
+-->
+
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Formulário de Entrega</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="deliveryForm">
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Endereço</ion-label>
+      <ion-input formControlName="address"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">CEP</ion-label>
+      <ion-input formControlName="cep"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Forma de Pagamento</ion-label>
+      <ion-select formControlName="paymentMethod">
+      
+        <ion-select-option value="cartao">Pix</ion-select-option>
+
+        <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
+        
+        <ion-select-option value="cartao">Cartão</ion-select-option>
+
+      </ion-select>
+    </ion-item>
+
+  </form>
+
+  <ion-button expand="full" color="secondary" (click)="submitDelivery()">Finalizar Pedido</ion-button>
+</ion-content>
+
+  

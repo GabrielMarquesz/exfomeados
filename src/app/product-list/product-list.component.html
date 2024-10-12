@@ -1,0 +1,63 @@
+<!-- src/app/product-list/product-list.component.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <img src="../../assets/logoof.png" id="logoinicio" alt="logoinicio">
+
+    </ion-title>
+    <ion-title>MENU</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="full" routerLink="/home" id="botao-voltar-inicio">voltar</ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let product of products">
+      <ion-thumbnail slot="start">
+        <img [src]="product.image" alt="{{ product.name }}">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ product.name }}</h2>
+        <br>
+        <p>Preço: {{ product.price | currency }}</p>
+      
+        <p>Total: {{ getCartQuantity(product.id) }}</p>
+      </ion-label>
+
+      <ion-button (click)="addToCart(product)" id="botao_adicionar">+</ion-button>
+      <ion-button 
+        color="danger" 
+        *ngIf="isInCart(product.id)"
+        (click)="removeFromCart(product.id)">
+        -
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <div>
+    <h2>Total do Carrinho: {{ cartTotal | currency }}</h2>
+  </div>
+
+  <ion-button expand="full" (click)="goToCart()" id="botao-voltar-inicio">
+    Confirmar Pedido
+  </ion-button>
+
+  <!--<ion-button expand="full" (click)="goToCart()" id="botao-voltar-inicio">
+    Voltar ao Carrinho
+  </ion-button>-->
+  
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+

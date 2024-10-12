@@ -1,0 +1,42 @@
+*{
+    display: flex; 
+    text-decoration: none;
+}
+
+app-contact.ion-page{
+    --background:black;
+}
+
+#botao_adicionar{
+    height: 1.5rem;
+    width: 1.5rem;
+    
+  
+}
+
+h1{
+  font-size: 1rem;
+}
+
+ion-icon{
+    background-color: rgb(158, 0, 0);
+    padding: 0.2rem;
+}
+ 
+#logoinicio{
+    height:3rem;
+    border-radius: 100%;
+    padding-left: 1rem;
+}
+
+#docesimg{
+    height: 100%;
+    width: 300rem;
+    border: 3px solid black;
+
+}
+
+
+#botao-voltar-inicio{
+    --background:rgb(145, 0, 0);
+}

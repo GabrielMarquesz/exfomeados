@@ -1,0 +1,34 @@
+
+/*fundo da pagina*/
+ion-content{
+    --background: #000000;
+ 
+ }
+.formulario-entrega{
+    display: flex;
+    flex-direction: column;
+   
+    padding: 5%;
+    
+}
+
+ion-button{
+    --background: #530101;
+
+}
+
+#titulo{
+    --color: white;
+}
+
+/*imagens*/
+img#logoinicio{
+    height:3rem;
+    border-radius: 100%;
+    padding-left: 1rem;
+  }
+  
+  #resumo-pedido{
+  --background: #ffffff;
+    }
+  

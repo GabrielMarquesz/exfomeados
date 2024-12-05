@@ -1,33 +1,48 @@
-
-import { DeliveryFormComponent } from './delivery-form/delivery-form.component';/*formulario*/ 
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // Importe o FormsModule
-import { CartService } from './services/cart.service'; // Importar o serviço
-import { ProductListComponent } from './product-list/product-list.component'; // Importar o componente
-import { CartComponent } from './cart/cart.component'; // Importar o componente
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { AppComponent } from './app.component';
+import { IonicModule } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-import { ReactiveFormsModule } from '@angular/forms';  // Adicione esta linha
+import { AngularFireModule } from '@angular/fire/compat';
+import { firebaseConfig } from '../firebaseConfig';
+import { FirebaseService } from './services/firebase.service';
+import { CartService } from './services/cart.service';
+import { CepService } from './services/cep.servise';
 
+import { ProductListComponent } from './product-list/product-list.component';
+import { CartComponent } from './cart/cart.component';
+import { DeliveryFormComponent } from './delivery-form/delivery-form.component';
+import { OrderManagementComponent } from './order-management/order-management.component';
+import { LoginComponent } from './LoginComponent/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    ProductListComponent, 
+    AppComponent,
+    ProductListComponent,
+    CartComponent,
     DeliveryFormComponent,
-    CartComponent],
-
-
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule,],
-
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, [CartService]],
-
+    OrderManagementComponent,
+    LoginComponent,
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    CommonModule,
+    FormsModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+  ],
+  providers: [
+    FirebaseService,
+    CartService,
+    CepService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-

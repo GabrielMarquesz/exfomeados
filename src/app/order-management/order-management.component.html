@@ -1,0 +1,115 @@
+<!--<div class="container mt-4">
+  <h2 class="text-center mb-4">Gerenciamento de Pedidos</h2>
+  
+  <div *ngIf="orders.length === 0" class="alert alert-info text-center">
+    Nenhum pedido disponível no momento.
+  </div>
+
+  <div *ngFor="let order of orders" class="card mb-3 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">
+        Pedido #{{ order.id }} - {{ order.customer }}
+      </h5>
+      <p class="card-text">
+        <strong>Endereço:</strong> {{ order.address }}<br />
+        <strong>Telefone:</strong> {{ order.phone }}<br />
+        <strong>Forma de Pagamento:</strong> {{ order.paymentMethod }}<br />
+        <strong>Total:</strong> 
+        <span [class]="getStatusColor(order.status)">
+          R$ {{ order.total.toFixed(2) }}
+        </span>
+      </p>
+      <p class="card-text">
+        <strong>Status:</strong>
+        <span [class]="getStatusColor(order.status)">
+          {{ order.status }}
+        </span>
+      </p>
+
+      <div class="d-flex justify-content-between">
+        <button
+          class="btn btn-success btn-sm"
+          (click)="updateOrderStatus(order, 'Concluído')"
+          [disabled]="order.status === 'Concluído'"
+        >
+          Marcar como Concluído
+        </button>
+        <button
+          class="btn btn-warning btn-sm"
+          (click)="updateOrderStatus(order, 'Em Andamento')"
+          [disabled]="order.status === 'Em Andamento'"
+        >
+          Mover para Em Andamento
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="updateOrderStatus(order, 'Cancelado')"
+          [disabled]="order.status === 'Cancelado'"
+        >
+          Cancelar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Gerenciamento de Pedidos</h2>
+  
+  <div *ngIf="orders.length === 0" class="alert alert-info text-center">
+    Nenhum pedido disponível no momento.
+  </div>
+
+  <div *ngFor="let order of orders" class="card mb-3 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">
+        Pedido #{{ order.id }} - {{ order.customer }}
+      </h5>
+      <p class="card-text">
+        <strong>Endereço:</strong> {{ order.address }}<br />
+        <strong>Telefone:</strong> {{ order.phone }}<br />
+        <strong>Forma de Pagamento:</strong> {{ order.paymentMethod }}<br />
+        <strong>Total:</strong> 
+        <span [class]="getStatusColor(order.status)">
+          R$ {{ order.total.toFixed(2) }}
+        </span>
+      </p>
+      <p class="card-text">
+        <strong>Status:</strong>
+        <span [class]="getStatusColor(order.status)">
+          {{ order.status }}
+        </span>
+      </p>
+
+      <div class="d-flex justify-content-between">
+        <button
+          class="btn btn-success btn-sm"
+          (click)="updateOrderStatus(order, 'Concluído')"
+          [disabled]="order.status === 'Concluído'"
+        >
+          Marcar como Concluído
+        </button>
+        <button
+          class="btn btn-warning btn-sm"
+          (click)="updateOrderStatus(order, 'Em Andamento')"
+          [disabled]="order.status === 'Em Andamento'"
+        >
+          Mover para Em Andamento
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="updateOrderStatus(order, 'Cancelado')"
+          [disabled]="order.status === 'Cancelado'"
+        >
+          Cancelar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

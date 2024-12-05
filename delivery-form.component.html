@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Formulário de Entrega</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="deliveryForm" (ngSubmit)="enviarPedidoWhatsApp()">
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Telefone</ion-label>
+      <ion-input formControlName="phone" required></ion-input>
+    </ion-item>
+
+    <!--
+    <ion-item>
+      <ion-label position="floating">CEP</ion-label>
+      <ion-input formControlName="cep" (blur)="buscarEndereco(deliveryForm.value.cep)" required></ion-input>
+    </ion-item>-->
+
+    <ion-item>
+      <ion-label position="floating">CEP</ion-label>
+      <ion-input type="text" formControlName="cep" (ionBlur)="buscarEndereco(deliveryForm.get('cep')?.value)"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Endereço</ion-label>
+      <ion-input formControlName="address" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Número da Casa</ion-label>
+      <ion-input formControlName="houseNumber" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Forma de Pagamento</ion-label>
+      <ion-input formControlName="paymentMethod" required>
+        <ion-select formControlName="paymentMethod">
+          <ion-select-option value="Dinheiro">Dinheiro</ion-select-option>
+          <ion-select-option value="Cartão de Crédito">Cartão de Crédito</ion-select-option>
+          <ion-select-option value="Cartão de Débito">Cartão de Débito</ion-select-option>
+          <ion-select-option value="Pix">Pix</ion-select-option> <!-- Opção Pix adicionada -->
+        </ion-select>
+      </ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!deliveryForm.valid">Confirmar Pedido</ion-button>
+  </form>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo do Pedido</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ul>
+        <li *ngFor="let item of cartItems">
+          {{ item.product.name }} - {{ item.quantity }} x R$ {{ item.product.price }} = R$ {{ item.product.price * item.quantity }}
+        </li>
+      </ul>
+      <h2>Total: R$ {{ total }}</h2>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

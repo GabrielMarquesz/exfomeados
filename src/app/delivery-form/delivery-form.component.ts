@@ -1,50 +1,10 @@
-/*import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { CartService } from '../services/cart.service';
-
-@Component({
-  selector: 'app-delivery-form',
-  templateUrl: './delivery-form.component.html',
-  styleUrls: ['./delivery-form.component.scss'],
-})
-export class DeliveryFormComponent {
-  deliveryForm: FormGroup;
-
-  constructor(private fb: FormBuilder, private cartService: CartService) {
-    this.deliveryForm = this.fb.group({
-      name: [''],
-      address: [''],
-      cep: [''],
-      paymentMethod: ['']
-    });
-  }
-
-  submitDelivery() {
-    const formData = this.deliveryForm.value;
-    const cartItems = this.cartService.getCart();
-    const total = this.cartService.getTotal();
-
-    // Monta a mensagem do pedido para WhatsApp
-    let message = `Pedido de ${formData.name}\nEndereço: ${formData.address}\nCEP: ${formData.cep}\nForma de Pagamento: ${formData.paymentMethod}\n\nProdutos:\n`;
-
-    cartItems.forEach(item => {
-      message += `${item.product.name} - Quantidade: ${item.quantity} - Preço: R$ ${item.product.price * item.quantity}\n`;
-    });
-
-    message += `\nTotal: R$ ${total}`;
-
-    // Enviar para WhatsApp
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=5521991172938&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  }
-}
-
-*/
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { CepService } from '../services/cep.servise';
 import { CartService } from '../services/cart.service';
+import { FirebaseService } from '../services/firebase.service'; // Adicionado
+import { Router } from '@angular/router';
+import { Product } from '../models/product.model';
 
 @Component({
   selector: 'app-delivery-form',
@@ -52,45 +12,101 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./delivery-form.component.scss'],
 })
 export class DeliveryFormComponent implements OnInit {
-  deliveryForm: FormGroup;
+  deliveryForm!: FormGroup;
+  cartItems: { product: Product; quantity: number }[] = [];
   total: number = 0;
-  cartItems: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
+    private cepService: CepService,
     private cartService: CartService,
+    private firebaseService: FirebaseService, // Adicionado
     private router: Router
-  ) {
-    this.deliveryForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
-      cep: ['', Validators.required],
-      paymentMethod: ['', Validators.required],
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.deliveryForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      phone: ['', Validators.required],
+      cep: ['', Validators.required],
+      address: ['', Validators.required],
+      houseNumber: ['', Validators.required],
+      paymentMethod: ['', Validators.required],
+    });
+
     this.cartItems = this.cartService.getCart();
     this.calculateTotal();
   }
 
-  calculateTotal() {
-    this.total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  buscarEndereco(cep: string) {
+    this.cepService.buscarCep(cep).subscribe(
+      (dados: any) => {
+        this.deliveryForm.patchValue({
+          address: dados.logradouro,
+        });
+      },
+      (error) => {
+        console.error('Erro ao buscar o CEP:', error);
+      }
+    );
   }
 
-  submitDelivery() {
+  calculateTotal() {
+    this.total = this.cartItems.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
+  }
+
+  enviarPedidoWhatsApp() {
     if (this.deliveryForm.valid) {
-      const orderDetails = this.cartItems.map(item => {
-        return `${item.quantity}x ${item.product.name} - R$${item.product.price}`;
-      }).join(', ');
+      const formValues = this.deliveryForm.value;
+      let mensagem = `CONFIRMAÇÃO DO PEDIDO!\nNome: ${formValues.name}\nTelefone: ${formValues.phone}\n`;
+      mensagem += `Endereço: ${formValues.address}, ${formValues.houseNumber}\nForma de pagamento: ${formValues.paymentMethod}\n\n`;
+      mensagem += 'Pedido:\n';
 
-      const deliveryInfo = this.deliveryForm.value;
-      const message = `Confirmação do Pedido: ${orderDetails}\nTotal: R$${this.total}\nNome: ${deliveryInfo.name}\nEndereço: ${deliveryInfo.address}\nCEP: ${deliveryInfo.cep}\nForma de Pagamento: ${deliveryInfo.paymentMethod}`;
+      this.cartItems.forEach((item) => {
+        mensagem += `- ${item.product.name} (Quantidade: ${item.quantity}) - R$ ${
+          item.product.price * item.quantity
+        }\n`;
+      });
 
-      window.open(`https://wa.me/5521964717752?text=${encodeURIComponent(message)}`, '_blank');
+      mensagem += `\nTotal: R$ ${this.total}`;
+
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=5521998343416&text=${encodeURIComponent(
+        mensagem
+      )}`;
+      window.open(whatsappUrl);
     } else {
-      alert('Por favor, preencha todos os campos corretamente.');
+      console.log('Formulário inválido');
+    }
+  }
+
+  // Função para salvar o pedido no Firestore
+  salvarPedidoFirebase() {
+    if (this.deliveryForm.valid) {
+      // Criar o pedido com os dados do formulário e itens do carrinho
+      const pedido = {
+        ...this.deliveryForm.value,
+        items: this.cartItems,
+        total: this.total,
+      };
+
+      // Log para verificar os dados do pedido antes de enviar
+      console.log('Pedido a ser enviado para o Firestore:', pedido);
+
+      // Chamar o serviço Firebase para salvar o pedido
+      this.firebaseService
+        .salvarPedido(pedido)  // Usando o serviço Firebase para salvar no Firestore
+        .then(() => {
+          console.log('Pedido enviado para o Firestore com sucesso.');
+          this.router.navigate(['/sucesso']);  // Navegar para a tela de sucesso
+        })
+        .catch((error) => {
+          console.error('Erro ao enviar pedido para o Firestore:', error);
+        });
+    } else {
+      console.log('Formulário inválido');
     }
   }
 }
-
